@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Restaurant Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpapertag.com/wallpaper/full/4/d/7/317105-gorgerous-food-background-2990x1918-for-mobile-hd.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            height: 300px;
+            width: 100%;
+        }
+
+        .navbar .logo img{
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        h1 {
+            margin-top: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color:   #ffffff;
+            color:   #db370e;
+        
+            
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            width: 30%;
+            height: 400px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(214, 22, 22, 0.1);
+        }
+        form input, form button {
+            display: block;
+            width: 90%;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        form button {
+            margin-top: 10px;
+            background-color:  #db370e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #db370e;
+        }
+        table {
+            width: 90%;
+            margin: 40px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+        table th {
+            background-color: #db370e;
+            color: white;
+        }
+        table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+        table img {
+            max-height: 50px;
+            width: auto;
+        }
+        table button {
+            padding: 5px 10px;
+            font-size: 14px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        table .delete {
+            background-color: #ff011a;
+        }
+        table .delete:hover {
+            background-color: #ff051e;
+        }
+        table .update {
+            background-color:#189208;
+        }
+        table .update:hover {
+            background-color: #189208;
+
+        }
+    
+    </style>
+</head>
+<body>
+<div>
+    <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color:  #db370e; color: white;">
+        <!-- Logo -->
+        <div class="logo" style="flex: 1;margin-left: 80px;">
+            <img src="https://s3.amazonaws.com/cdn.designcrowd.com/blog/39-Food-Delivery-Logos-That-Will-Leave-You-Hungry-For-More/food-express-by-gigih-rudya-designcrowd.png" alt="MyonlineMail.com" style="height: 50px; width: auto;">
+        </div>
+
+        <!-- Navigation Links -->
+        <ul style="display: flex; list-style: none; margin: 0; padding: 0; flex: 2; justify-content: center;">
+            <li class="items" style="margin: 0 15px;">
+                <a th:href="@{/home}" style="color: white; text-decoration: none; font-size: 16px; cursor: pointer;">Home</a>
+            </li>
+            <li class="items" style="margin: 0 15px;">
+                <a th:href="@{/about}" style="color: white; text-decoration: none; font-size: 16px; cursor: pointer;">About</a>
+            </li>
+        </ul>
+        
+        <!--Add restaurant-->
+        <div id="logout" style="flex: 1; text-align: right;">
+            <a th:href="@{/res}" style="color:  rgb(206, 42, 42); text-decoration: none; font-size: 16px; background-color:  #ffffff; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Add restaurant</a>
+        </div>
+
+        <!-- Logout Button -->
+        <div id="logout" style="flex: 1; text-align: right;">
+            <a th:href="@{/home}" style="color: rgb(206, 42, 42); text-decoration: none; font-size: 16px; background-color:  #fffefe; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Logout</a>
+        </div>
+    </nav>
+</div>
+
+
+
+
+<form th:action="@{/add}" method="post" enctype="multipart/form-data">
+    <h1>Manage Menu</h1>
+    <input type="text" name="name" placeholder="Dish Name" required>
+    <input type="text" name="description" placeholder="Description" required>
+    <input type="number" name="price" placeholder="Price" step="0.01" required>
+    <input type="file" name="logo" id="logo" required>
+    <button type="submit">Add Dish</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="dish : ${dishes}">
+            <td><img th:src="${dish.logoPath}" alt="Dish Logo"></td>
+            <td th:text="${dish.name}"></td>
+            <td th:text="${dish.description}"></td>
+            <td th:text="${dish.price}"></td>
+            <td>
+                <form th:action="@{/delete/{id}(id=${dish.id})}" method="post" style="display:inline;">
+                    <button class="delete" type="submit">Delete</button>
+                </form>
+                <form th:action="@{/update/{id}(id=${dish.id})}" method="get" style="display:inline;">
+                    <button class="update" type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

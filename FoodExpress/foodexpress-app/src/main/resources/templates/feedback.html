@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Share Your Experience</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('http://www.zingerbug.com/Backgrounds/background_images/light_pink_and_blue_gradient.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            height: 300px;
+            width: 100%;
+            z-index: -5;
+            opacity: 0.80;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #000000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 90%;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #afadad;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            background-color: #e45908;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #e45908;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Feedback</h2>
+
+        <form th:action="@{/submitFeedback}" method="post" >
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name"  th:value="${session.loggedInUser != null ? session.loggedInUser.name : ''}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"  th:value="${session.loggedInUser != null ? session.loggedInUser.email : ''}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <select id="rating" name="rating"  required>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Average</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="review">Feedback:</label>
+                <textarea id="review" name="review"  required></textarea>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
